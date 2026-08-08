@@ -8,6 +8,8 @@ import env from "../config/env.js";
 export const connectDatabase = async () => {
   try {
     mongoose.set("strictQuery", true);
+    console.log("Attempting MongoDB connection...");
+    console.log("Mongo URI configured:", Boolean(env.MONGO_URI));
 
     await mongoose.connect(env.MONGO_URI);
 
