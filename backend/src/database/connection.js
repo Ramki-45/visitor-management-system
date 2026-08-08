@@ -26,7 +26,9 @@ export const connectDatabase = async () => {
   console.log("Mongo URI configured:", Boolean(env.MONGO_URI));
 
   connectionPromise = mongoose
-    .connect(env.MONGO_URI)
+    .connect(env.MONGO_URI, {
+      serverSelectionTimeoutMS: 8000, // fail fast instead of hanging near the function's own execution limit
+    })
     .then(() => {
       console.log(`MongoDB Connected: ${mongoose.connection.host}`);
 
