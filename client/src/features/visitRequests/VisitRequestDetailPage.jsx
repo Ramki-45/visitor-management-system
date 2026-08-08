@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { visitRequestsApi } from "../../api/visitRequestsApi";
 import { useApi } from "../../hooks/useApi";
-import { PageLoader } from "../../components/ui/PageLoader";
+import { LoadingScreen } from "../../components/ui/LoadingScreen";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { StatusBadge } from "../../components/ui/StatusBadge";
@@ -26,7 +26,7 @@ export function VisitRequestDetailPage() {
   );
 
   if (loading) {
-    return <PageLoader />;
+    return <LoadingScreen />;
   }
 
   if (error) {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { visitRequestsApi } from "../../api/visitRequestsApi";
 import { useApi } from "../../hooks/useApi";
 import { useDebounce } from "../../hooks/useDebounce";
-import { PageLoader } from "../../components/ui/PageLoader";
+import { LoadingScreen } from "../../components/ui/LoadingScreen";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { getErrorMessage } from "../../utils/errorMessages";
@@ -54,7 +54,7 @@ export function VisitRequestListPage() {
       <VisitRequestFilters filters={filters} onChange={setFilters} />
 
       <div className="rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
-        {loading && <PageLoader />}
+        {loading && <LoadingScreen />}
 
         {!loading && error && (
           <ErrorState message={getErrorMessage(error)} onRetry={refetch} />

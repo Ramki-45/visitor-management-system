@@ -3,7 +3,7 @@ import { visitorsApi } from "../../api/visitorsApi";
 import { useApi } from "../../hooks/useApi";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Input } from "../../components/ui/Input";
-import { PageLoader } from "../../components/ui/PageLoader";
+import { LoadingScreen } from "../../components/ui/LoadingScreen";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { getErrorMessage } from "../../utils/errorMessages";
@@ -67,7 +67,7 @@ export function VisitorSearchPage() {
           />
         )}
 
-        {hasQuery && loading && <PageLoader />}
+        {hasQuery && loading && <LoadingScreen />}
 
         {hasQuery && !loading && error && (
           <ErrorState message={getErrorMessage(error)} onRetry={refetch} />

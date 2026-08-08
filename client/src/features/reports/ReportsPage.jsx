@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { reportsApi } from "../../api/reportsApi";
 import { useApi } from "../../hooks/useApi";
-import { PageLoader } from "../../components/ui/PageLoader";
+import { LoadingScreen } from "../../components/ui/LoadingScreen";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { StatCard } from "../../components/ui/StatCard";
@@ -94,7 +94,7 @@ export function ReportsPage() {
         />
       )}
 
-      {isCustomReady && loading && <PageLoader />}
+      {isCustomReady && loading && <LoadingScreen />}
 
       {isCustomReady && !loading && error && (
         <ErrorState message={getErrorMessage(error)} onRetry={refetch} />

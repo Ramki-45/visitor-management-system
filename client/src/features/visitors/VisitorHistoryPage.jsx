@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { visitorsApi } from "../../api/visitorsApi";
 import { useApi } from "../../hooks/useApi";
-import { PageLoader } from "../../components/ui/PageLoader";
+import { LoadingScreen } from "../../components/ui/LoadingScreen";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { getErrorMessage } from "../../utils/errorMessages";
@@ -17,7 +17,7 @@ export function VisitorHistoryPage() {
     refetch,
   } = useApi(() => visitorsApi.history(id), [id]);
 
-  if (loading) return <PageLoader />;
+  if (loading) return <LoadingScreen />;
   if (error)
     return <ErrorState message={getErrorMessage(error)} onRetry={refetch} />;
 

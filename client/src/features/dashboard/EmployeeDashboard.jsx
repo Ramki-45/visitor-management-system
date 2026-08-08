@@ -1,6 +1,6 @@
 import { dashboardApi } from "../../api/dashboardApi";
 import { useApi } from "../../hooks/useApi";
-import { PageLoader } from "../../components/ui/PageLoader";
+import { LoadingScreen } from "../../components/ui/LoadingScreen";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { StatCard } from "../../components/ui/StatCard";
 import { getErrorMessage } from "../../utils/errorMessages";
@@ -13,7 +13,7 @@ export function EmployeeDashboard() {
     [],
   );
 
-  if (loading) return <PageLoader />;
+  if (loading) return <LoadingScreen />;
   if (error)
     return <ErrorState message={getErrorMessage(error)} onRetry={refetch} />;
 
