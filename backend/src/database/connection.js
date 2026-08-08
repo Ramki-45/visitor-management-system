@@ -1,38 +1,58 @@
 import mongoose from "mongoose";
 import env from "../config/env.js";
 
+let connectionPromise = null;
+
 /**
  * Establishes a connection to MongoDB.
- * Called once during application startup.
+ *
+ * Reuses the existing connection when running in a
+ * serverless environment such as Vercel.
  */
 export const connectDatabase = async () => {
-  try {
-    mongoose.set("strictQuery", true);
-    console.log("Attempting MongoDB connection...");
-    console.log("Mongo URI configured:", Boolean(env.MONGO_URI));
+  mongoose.set("strictQuery", true);
 
-    await mongoose.connect(env.MONGO_URI);
-
-    console.log(`MongoDB Connected: ${mongoose.connection.host}`);
-  } catch (error) {
-    console.error("MongoDB Connection Failed");
-    console.error(error.message);
-    process.exit(1);
+  // Already connected
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
   }
-};
 
-/*disconnects from MongoDB.*/
+  // Connection already in progress
+  if (connectionPromise) {
+    return connectionPromise;
+  }
+
+  console.log("Attempting MongoDB connection...");
+  console.log("Mongo URI configured:", Boolean(env.MONGO_URI));
+
+  connectionPromise = mongoose
+    .connect(env.MONGO_URI)
+    .then(() => {
+      console.log(`MongoDB Connected: ${mongoose.connection.host}`);
+
+      return mongoose.connection;
+    })
+    .catch((error) => {
+      connectionPromise = null;
+
+      console.error("MongoDB Connection Failed:");
+      console.error(error.message);
+
+      throw error;
+    });
+
+  return connectionPromise;
+};
 
 export const disconnectDatabase = async () => {
   try {
     await mongoose.disconnect();
+    connectionPromise = null;
     console.log("MongoDB Disconnected");
   } catch (error) {
     console.error("Error disconnecting MongoDB:", error.message);
   }
 };
-
-/*MongoDB connection event listeners.*/
 
 mongoose.connection.on("connected", () => {
   console.log("MongoDB connection established");
